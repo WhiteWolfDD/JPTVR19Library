@@ -5,31 +5,33 @@
  */
 package entity;
 
+import java.io.Serializable;
+
 /**
  *
  * @author pupil
  */
-public class Book {
-    private String name;
+public class Book implements Serializable{
+    private String firstname;
     private String author;
     private Integer publishedYear;
     private String isbn;
     
     public Book(){
     }
-    public Book(String name, String author, Integer publishedYead, String isbn) {
-        this.name = name;
+    public Book(String firstname, String author, Integer publishedYear, String isbn) {
+        this.firstname = firstname;
         this.author = author;
         this.publishedYear = publishedYear;
         this.isbn = isbn;
     }
 
     public String getName() {
-        return name;
+        return firstname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
     }
 
     public String getAuthor() {
@@ -58,7 +60,12 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Book{" + "name=" + name + ", author=" + author + ", publishedYear=" + publishedYear + ", isbn=" + isbn + '}';
+        return "Book{" 
+                + "name=" + firstname 
+                + ", author=" + author 
+                + ", publishedYear=" + publishedYear 
+                + ", isbn=" + isbn 
+                + '}';
     }
     
 }
