@@ -13,33 +13,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-/**
- *
- * @author pupil
- */
 public class HistorySaver {
-    public History[] loadHistoryFromFile() {
-        //Book[] books = new book[10];
-        History[] history = null;
-        String fileName = "history";
-        FileInputStream fis = null;
-        ObjectInputStream ois = null;
-        try {
-            fis = new FileInputStream(fileName);
-            ois = new ObjectInputStream(fis);
-            return (History[]) ois.readObject();
-        } catch (FileNotFoundException ex) {
-            System.out.println("Нет такого файла"); 
-        } catch (IOException ex){
-            System.out.println("Ошибка ввода/вывода");
-        } catch (ClassNotFoundException ex) {
-            System.out.println("Нет такого класса");
-        }
-        return history;
+    private final String fileName = "histories";
 
-
-    public void saveHistoryToFile(History[] histories) {
-        String fileName = "histories";
+    public void saveHistories(History[] histories) {
         FileOutputStream fos = null;
         ObjectOutputStream oos = null;
         try {
@@ -48,9 +25,27 @@ public class HistorySaver {
             oos.writeObject(histories);
             oos.flush();
         } catch (FileNotFoundException ex) {
-            System.out.println("Нет такого файла");
+            System.out.println("Не найден файл");
         } catch (IOException ex) {
             System.out.println("Ошибка ввода/вывода");
         }
     }
+
+    public History[] loadFile() {
+        FileInputStream fis = null;
+        ObjectInputStream ois = null;
+        try {
+            fis = new FileInputStream(fileName);
+            ois = new ObjectInputStream(fis);
+            return (History[]) ois.readObject();
+        } catch (FileNotFoundException ex) {
+            System.out.println("Не найден файл");
+        } catch (IOException ex) {
+            System.out.println("Ошибка ввода/вывода");
+        } catch (ClassNotFoundException ex) {
+            System.out.println("Ошибка: не найден класс");
+        }
+        return new History[100];
+    }
+
 }

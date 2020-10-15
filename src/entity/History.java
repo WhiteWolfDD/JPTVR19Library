@@ -3,21 +3,19 @@ package entity;
 import java.io.Serializable;
 import java.util.Date;
 
-public class History implements Serializable {
+public class History implements Serializable{
     private Book book;
     private Reader reader;
-    private Date giveOutDate;
+    private Date takeOnDate;
     private Date returnDate;
-    public int length;
-    private String takeOnDate;
 
     public History() {
     }
 
-    public History(Book book, Reader reader, Date giveOutDate, Date returnDate) {
+    public History(Book book, Reader reader, Date takeOnDate, Date returnDate) {
         this.book = book;
         this.reader = reader;
-        this.giveOutDate = giveOutDate;
+        this.takeOnDate = takeOnDate;
         this.returnDate = returnDate;
     }
 
@@ -45,20 +43,22 @@ public class History implements Serializable {
         this.reader = reader;
     }
 
-    public Date getGiveOutDate() {
-        return giveOutDate;
+    public Date getTakeOnDate() {
+        return takeOnDate;
     }
 
-    public void setGiveOutDate(Date giveOutDate) {
-        this.giveOutDate = giveOutDate;
+    public void setTakeOnDate(Date takeOnDate) {
+        this.takeOnDate = takeOnDate;
     }
 
     @Override
     public String toString() {
-        return "Название книги = " + book.getName()
-                + ", Читатель = " + reader.getFirstname()+" "+reader.getLastname()
-                + ", Дата взятия книги = " + takeOnDate
-                + ", Дата возврата  =" + returnDate
+        return "History{"
+                + "book=" + book.getName()
+                + ", reader=" + reader.getName()+" "+reader.getLastname()
+                + ", takeOnDate=" + takeOnDate
+                + ", returnDate=" + returnDate
                 + '}';
     }
+
 }
