@@ -11,24 +11,25 @@ import entity.History;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
-import tools.BookManager;
-import tools.BookSaver;
-import tools.HistoryManager;
-import tools.HistorySaver;
-import tools.ReaderManager;
-import tools.ReaderSaver;
+
+import entity.User;
+import tools.*;
 
 /**
  *
  * @author pupil
  */
  class App {
-    private Book[] books = new Book[100];
-    private Reader[] readers = new Reader[100];
-    private History[] histories = new History[100];
+    private Book[] books = new Book[10];
+    private Reader[] readers = new Reader[10];
+    private History[] histories = new History[10];
+    private User[] users = new User[10];
     private ReaderManager readerManager = new ReaderManager();
     private BookManager bookManager = new BookManager();
     private HistoryManager historyManager = new HistoryManager();
+
+    private User loginedUser;
+    
     public App(){
         BookSaver bookSaver = new BookSaver();
         books = bookSaver.loadFile();
@@ -41,6 +42,7 @@ import tools.ReaderSaver;
     public void run() {
         System.out.println("--- Библиотека ---");
         boolean repeat = true;
+        this.loginedUser = SecureManager.checkTask(users, readers);
         do {
             System.out.println("Задачи: ");
             System.out.println("0. Выйти с программы");
