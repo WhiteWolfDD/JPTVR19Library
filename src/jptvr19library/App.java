@@ -1,61 +1,43 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package jptvr19library;
 
-import tools.savers.HistorySaver;
-import tools.creators.LibraryManager;
-import tools.savers.BookSaver;
-import tools.creators.ReaderManager;
 import entity.Book;
 import entity.History;
 import entity.Reader;
 import entity.User;
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 import security.SecureManager;
-import tools.creators.BookManager;
-import tools.savers.ReaderSaver;
-import tools.savers.UserSaver;
+import tools.savers.SaverToFile;
 import ui.ManagerUI;
 import ui.ReaderUI;
 
-/**
- *
- * @author Melnikov
- */
 public class App {
-    private Book[] books = new Book[10];
-    private Reader[] readers = new Reader[10];
-    private History[] histories = new History[10];
-    private User[] users = new User[10];
-   
-    private BookSaver bookSaver = new BookSaver();
-    private ReaderSaver readerSaver = new ReaderSaver();
-    private HistorySaver historySaver = new HistorySaver();
+    private List<Book> listBooks = new ArrayList<>();
+    private List<Reader> listReaders = new ArrayList<>();
+    private List<History> listHistories = new ArrayList<>();
+    private List<User> listUsers = new ArrayList<>();
+    private SaverToFile saverToFile = new SaverToFile();
     private SecureManager secureManager = new SecureManager();
-    private UserSaver userSaver = new UserSaver();
 
     public static User loginedUser;
-    
+
     public App() {
-        books = bookSaver.loadBooks();
-        readers = readerSaver.loadReaders();
-        histories = historySaver.loadHistories();
-        users = userSaver.loadUsers();
+        listBooks = saverToFile.load("books");
+        listReaders = saverToFile.load("readers");
+        listHistories = saverToFile.load("histories");
+        listUsers = saverToFile.load("users");
     }
-    
+
     public void run(){
         boolean repeat = true;
         System.out.println("--- Библиотека ---");
-        this.loginedUser = secureManager.checkTask(users,readers);
-        if("MANAGER".equals(this.loginedUser.getRole())){
+        this.loginedUser = secureManager.checkTask(listUsers,listReaders);
+        if(SecureManager.role.MANAGER.toString().equals(this.loginedUser.getRole())){
             ManagerUI managerUI = new ManagerUI();
-            managerUI.getManagerUI(readers, users, books, histories);
-        }else if("READER".equals(this.loginedUser.getRole())){
+            managerUI.getManagerUI(listReaders, listUsers, listBooks, listHistories);
+        }else if(SecureManager.role.READER.toString().equals(this.loginedUser.getRole())){
             ReaderUI readerUI = new ReaderUI();
-            readerUI.getReaderUI(readers, users, books, histories);
+            readerUI.getReaderUI(listReaders, listUsers, listBooks, listHistories);
         }
     }
 }

@@ -1,20 +1,25 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entity;
 
 import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 /**
  *
  * @author Melnikov
  */
+@Entity
 public class User implements Serializable{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String login;
     private String password;
     private String role;
+    @OneToOne
     private Reader reader;
 
     public User() {
@@ -27,7 +32,7 @@ public class User implements Serializable{
         this.reader = reader;
     }
 
-   
+
 
     public String getLogin() {
         return login;
@@ -63,13 +68,21 @@ public class User implements Serializable{
 
     @Override
     public String toString() {
-        return "User{" 
-                + "login=" + login 
-                + ", password=" + password 
-                + ", role=" + role 
+        return "User{"
+                + "login=" + login
+                + ", password=" + password
+                + ", role=" + role
                 + ", reader=" + reader.getFirstname()
                 + " " + reader.getLastname()
                 + '}';
     }
-    
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
 }

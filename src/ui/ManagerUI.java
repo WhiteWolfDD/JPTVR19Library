@@ -1,39 +1,23 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ui;
 
 import entity.Book;
 import entity.History;
 import entity.Reader;
 import entity.User;
+import java.util.List;
 import java.util.Scanner;
-import security.SecureManager;
 import tools.creators.BookManager;
 import tools.creators.LibraryManager;
 import tools.creators.ReaderManager;
-import tools.savers.BookSaver;
-import tools.savers.HistorySaver;
-import tools.savers.ReaderSaver;
-import tools.savers.UserSaver;
+import tools.savers.SaverToFile;
 
-/**
- *
- * @author Melnikov
- */
 public class ManagerUI {
     private BookManager bookManager = new BookManager();
     private ReaderManager readerManager = new ReaderManager();
     private LibraryManager libraryManager = new LibraryManager();
-    private BookSaver bookSaver = new BookSaver();
-    private ReaderSaver readerSaver = new ReaderSaver();
-    private HistorySaver historySaver = new HistorySaver();
-    private SecureManager secureManager = new SecureManager();
-    private UserSaver userSaver = new UserSaver();
-    
-    public void getManagerUI(Reader[]readers, User[] users, Book[] books, History[] histories){
+    private SaverToFile saverToFile = new SaverToFile();
+
+    public void getManagerUI(List<Reader> listReaders, List<User> listUsers, List<Book> listBooks, List<History> listHistories){
         boolean repeat = true;
         do{
             System.out.println("Задачи: ");
@@ -56,39 +40,38 @@ public class ManagerUI {
                 case "1":
                     System.out.println("--- Добавить новую книгу ---");
                     Book book = bookManager.createBook();
-                    bookManager.addBookToArray(book,books);
-                    bookSaver.saveBooks(books);
+                    book = saverToFile.saveBook(book);
+                    bookManager.addBookToArray(book,listBooks);
                     break;
                 case "2":
                     System.out.println("--- Список книг ---");
-                    bookManager.printListBooks(books);
+                    bookManager.printListBooks(listBooks);
                     break;
                 case "3":
                     System.out.println("--- Зарегистрировать читателя ---");
                     Reader reader = readerManager.createReader();
-                    readerManager.addReaderToArray(reader,readers);
-                    readerSaver.saveReaders(readers);
+                    readerManager.addReaderToArray(reader,listReaders);
+                    saverToFile.save(listReaders,"readers");
                     break;
                 case "4":
                     System.out.println("--- Список читателей ---");
-                    readerManager.printListReaders(readers);
+                    readerManager.printListReaders(listReaders);
                     break;
                 case "5":
                     System.out.println("--- Выдать книгу читателю ---");
-                    History history = libraryManager.takeOnBook(books, readers);
-                    libraryManager.addHistoryToArray(history,histories);
-                    historySaver.saveHistories(histories);
+                    History history = libraryManager.takeOnBook(listBooks, listReaders);
+                    libraryManager.addHistoryToArray(history,listHistories);
+                    saverToFile.save(listHistories,"histories");
                     break;
                 case "6":
                     System.out.println("--- Вернуть книгу в библиотеку ---");
                     libraryManager = new LibraryManager();
-                    libraryManager.returnBook(histories);
-                    historySaver = new HistorySaver();
-                    historySaver.saveHistories(histories);
+                    libraryManager.returnBook(listHistories);
+                    saverToFile.save(listHistories,"histories");
                     break;
                 case "7":
                     System.out.println("--- Список выданных книг ---");
-                    libraryManager.printListReadBooks(histories);
+                    libraryManager.printListReadBooks(listHistories);
                     break;
                 default:
                     System.out.println("Нет такой задачи.");
