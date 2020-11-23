@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package entity;
 
 import java.io.Serializable;
@@ -9,10 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
-/**
- *
- * @author Melnikov
- */
 @Entity
 public class History implements Serializable{
     @Id
@@ -71,7 +72,7 @@ public class History implements Serializable{
 
     @Override
     public String toString() {
-        return "History{"
+        return "History{" 
                 + "book=" + book.getName()
                 + ", reader=" + reader.getLastname()
                 + ", giveOutDate=" + giveOutDate
@@ -86,5 +87,5 @@ public class History implements Serializable{
     public void setId(Long id) {
         this.id = id;
     }
-
+    
 }

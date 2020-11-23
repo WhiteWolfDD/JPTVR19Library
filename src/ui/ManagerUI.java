@@ -1,23 +1,30 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package ui;
 
 import entity.Book;
 import entity.History;
-import entity.Reader;
 import entity.User;
-import java.util.List;
+import entity.dbcontrollers.BookFacade;
+import entity.dbcontrollers.HistoryFacade;
+import entity.dbcontrollers.UserFacade;
 import java.util.Scanner;
 import tools.creators.BookManager;
 import tools.creators.LibraryManager;
 import tools.creators.ReaderManager;
-import tools.savers.SaverToFile;
+import tools.creators.UserManager;
 
 public class ManagerUI {
     private BookManager bookManager = new BookManager();
     private ReaderManager readerManager = new ReaderManager();
+    private UserManager userManager = new UserManager();
     private LibraryManager libraryManager = new LibraryManager();
-    private SaverToFile saverToFile = new SaverToFile();
-
-    public void getManagerUI(List<Reader> listReaders, List<User> listUsers, List<Book> listBooks, List<History> listHistories){
+   
+    
+    public void getManagerUI(){
         boolean repeat = true;
         do{
             System.out.println("Задачи: ");
@@ -40,38 +47,31 @@ public class ManagerUI {
                 case "1":
                     System.out.println("--- Добавить новую книгу ---");
                     Book book = bookManager.createBook();
-                    book = saverToFile.saveBook(book);
-                    bookManager.addBookToArray(book,listBooks);
                     break;
                 case "2":
                     System.out.println("--- Список книг ---");
-                    bookManager.printListBooks(listBooks);
+                    bookManager.printListBooks();
                     break;
                 case "3":
                     System.out.println("--- Зарегистрировать читателя ---");
-                    Reader reader = readerManager.createReader();
-                    readerManager.addReaderToArray(reader,listReaders);
-                    saverToFile.save(listReaders,"readers");
+                    User user = userManager.createUser();
                     break;
                 case "4":
                     System.out.println("--- Список читателей ---");
-                    readerManager.printListReaders(listReaders);
+                    readerManager.printListReaders();
                     break;
                 case "5":
                     System.out.println("--- Выдать книгу читателю ---");
-                    History history = libraryManager.takeOnBook(listBooks, listReaders);
-                    libraryManager.addHistoryToArray(history,listHistories);
-                    saverToFile.save(listHistories,"histories");
+                    History history = libraryManager.takeOnBook();
                     break;
                 case "6":
                     System.out.println("--- Вернуть книгу в библиотеку ---");
                     libraryManager = new LibraryManager();
-                    libraryManager.returnBook(listHistories);
-                    saverToFile.save(listHistories,"histories");
+                    libraryManager.returnBook();
                     break;
                 case "7":
                     System.out.println("--- Список выданных книг ---");
-                    libraryManager.printListReadBooks(listHistories);
+                    libraryManager.printListReadBooks();
                     break;
                 default:
                     System.out.println("Нет такой задачи.");

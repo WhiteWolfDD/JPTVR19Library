@@ -1,11 +1,20 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package tools.creators;
 
 import entity.Book;
+import entity.dbcontrollers.BookFacade;
+import factory.FactoryFacade;
+
 import java.util.List;
 import java.util.Scanner;
 
 public class BookManager {
-    private Scanner scanner = new Scanner(System.in);
+        private BookFacade bookFacade = FactoryFacade.getBookFacade();
+        private Scanner scanner = new Scanner(System.in);
 
     public Book createBook() {
         Book book = new Book();
@@ -20,19 +29,17 @@ public class BookManager {
         System.out.print("Введите ISBN книги: ");
         book.setIsbn(scanner.nextLine());
         System.out.println("Создана книга: "+book.getName());
+        bookFacade.create(book);
         return book;
     }
 
-    public void addBookToArray(Book book, List<Book> listBooks) {
-        listBooks.add(book);
-    }
-
-    public void printListBooks(List<Book> listBooks) {
+    public void printListBooks() {
+        List<Book> listBooks = bookFacade.findAll();
         for (int i = 0; i < listBooks.size(); i++) {
             if(listBooks.get(i) != null){
-                System.out.println(i+1+". " + listBooks.get(i).toString());
+                System.out.println(listBooks.get(i)+". " + listBooks.get(i).toString());
             }
-        }
+        }   
     }
-
+    
 }

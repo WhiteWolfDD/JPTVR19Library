@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="org.eclipse:org.eclipse.bpmn2:0.8.2-jboss" type="repository">
+    <properties maven-id="org.eclipse:org.eclipse.bpmn2:0.8.2-jboss" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/org.eclipse.bpmn2-0.8.2-jboss.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,11 +1,20 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package tools.creators;
 
 import entity.Reader;
+import entity.dbcontrollers.ReaderFacade;
+import factory.FactoryFacade;
+
 import java.util.List;
 import java.util.Scanner;
 
 public class ReaderManager {
     private Scanner scanner = new Scanner(System.in);
+    private ReaderFacade readerFacade = FactoryFacade.getReaderFacade();
     public Reader createReader() {
         Reader reader = new Reader();
         System.out.println("--- Регистрация нового пользователя ---");
@@ -31,12 +40,13 @@ public class ReaderManager {
         );
     }
 
-    public void printListReaders(List<Reader> listReaders) {
+    public void printListReaders() {
+        List<Reader> listReaders = readerFacade.findAll();
         for (int i = 0; i < listReaders.size(); i++) {
             if(listReaders.get(i) != null){
-                System.out.println(i+1+". " + listReaders.get(i).toString());
+                System.out.println(listReaders.get(i) + ". " + listReaders.get(i).toString());
             }
         }
     }
-
+    
 }

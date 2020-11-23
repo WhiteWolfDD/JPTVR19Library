@@ -1,22 +1,41 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package security;
 
-import entity.Reader;
 import entity.User;
+import entity.dbcontrollers.UserFacade;
 import java.util.List;
 import java.util.Scanner;
-import tools.creators.ReaderManager;
+
+import factory.FactoryFacade;
 import tools.creators.UserManager;
-import tools.savers.SaverToFile;
 
 public class SecureManager {
 
-    private Scanner scanner = new Scanner(System.in);
-    public static enum role {
-        READER,
+private UserFacade userFacade = FactoryFacade.getUserFacade();
+private Scanner scanner = new Scanner(System.in);
+public static enum role {
+        READER, 
         MANAGER
-    };
+};
 
-    public User checkTask(List<User> listUsers, List<Reader> listReaders) {
+    public User checkTask() {
+        // Предоставим выбор пользователю:
+        //  0. Выход из программы
+        //  1. Регистрация
+        //  2. Вход в систему
+        //спросить у польльзователя логин и пароль.
+        // пройти по массиву пользователей и найти объект User 
+        // у которого совпадают логины (Authentication)
+        // - если user не найден -> дадим возможность зарегистрироваться.
+        //сравнить пароли у user.getPassword() и password
+        // -- если совпадают -> возвращаем объект пользователя. (Authorization)
+        // -- иначе дадим еще две попытки ввести пароль, после чего
+        // -- выход из программы System.exit(0);
+        
         do{
             String task = this.printCheckTasks();
             switch (task) {
@@ -25,16 +44,16 @@ public class SecureManager {
                     System.exit(0);
                     break;
                 case "1":
-                    this.registration(listUsers,listReaders);
+                    this.registration();
                     break;
                 case "2":
-                    return this.checkInUser(listUsers);
-
+                    return this.checkInUser();
+                    
                 default:
                     System.out.println("Выберите указанные задачи.");;
             }
         }while(true);
-
+        
     }
     private String printCheckTasks(){
         System.out.println("--- Вход в систему ---");
@@ -46,23 +65,22 @@ public class SecureManager {
         return numTask;
     }
 
-    private void registration(List<User> listUsers, List<Reader> listReaders) {
+    private void registration() {
         UserManager userManager = new UserManager();
         User user = userManager.createUser();
-        userManager.addUserToArray(user, listUsers);
-        ReaderManager readerManager = new ReaderManager();
-        readerManager.addReaderToArray(user.getReader(), listReaders);
-        SaverToFile saverToFile = new SaverToFile();
-        saverToFile.save(listReaders,"readers");
-        saverToFile.save(listUsers, "users");
     }
 
-    private User checkInUser(List<User> listUsers) {
+    private User checkInUser() {
         System.out.println("--- Вход в систему ---");
         System.out.println("Введите логин: ");
         String login = scanner.nextLine();
         System.out.println("Введите пароль: ");
         String password = scanner.nextLine();
+        List<User>listUsers = userFacade.findAll();
+        if(listUsers == null){
+            System.out.println("У вас нет доступа. Зарегистрируйтесь.");
+            System.exit(0);
+        }
         for (int i = 0; i < listUsers.size(); i++) {
             User user = listUsers.get(i);
             if(user == null) continue;
@@ -83,5 +101,5 @@ public class SecureManager {
         System.exit(0);
         return null;
     }
-
+    
 }
